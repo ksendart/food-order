@@ -4,10 +4,26 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import store from './store';
+import { FoodOrderService } from './api/services/food-order.service';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { FoodOrderServiceProvider } from './components/context/food-order.service.context';
+import { ErrorBoundary } from './components/error/error-boundary';
+
+
+const foodOrderService = new FoodOrderService();
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <ErrorBoundary>
+      <FoodOrderServiceProvider value={foodOrderService}>
+        <Router>
+          <App/>
+        </Router>
+      </FoodOrderServiceProvider>
+    </ErrorBoundary>
+  </Provider>,
   document.getElementById('root')
 );
 
