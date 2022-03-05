@@ -2,6 +2,7 @@ import { DayMenu } from '../api/interfaces/menu';
 
 export enum ActionType {
   MENU_LOADED = 'MENU_LOADED',
+  DAY_MENU_LOADED = 'DAY_MENU_LOADED',
   MENU_REQUESTED = 'MENU_REQUESTED',
   MENU_ERROR = 'MENU_ERROR',
 }
@@ -14,6 +15,12 @@ export type Action = {
 const menuLoaded = (menu: DayMenu[]): Action => {
   return {
     type: ActionType.MENU_LOADED,
+    payload: menu,
+  };
+}
+const dayMenuLoaded = (menu: DayMenu): Action => {
+  return {
+    type: ActionType.DAY_MENU_LOADED,
     payload: menu,
   };
 }
@@ -31,6 +38,7 @@ const menuError = (error: string) => {
 
 export {
   menuLoaded,
+  dayMenuLoaded,
   menuRequested,
   menuError,
 };

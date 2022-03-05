@@ -1,48 +1,13 @@
-import { Action, ActionType } from '../actions';
+import { Action } from '../actions';
 import { State } from '../api/interfaces/state';
+import adminState from './admin';
+import userState from './user';
 
-const initialState: State = {
-  menu: {
-    daysMenu: [],
-    loading: false,
-    error: null,
-  },
-  orders: [],
-  order: null,
-};
-
-const reducer = (state = initialState, action: Action) => {
-  switch (action.type) {
-    case ActionType.MENU_LOADED:
-      return {
-        ...state,
-        menu: {
-          daysMenu: action.payload,
-          loading: false,
-          error: null,
-        },
-      };
-    case ActionType.MENU_REQUESTED:
-      return {
-        ...state,
-        menu: {
-          daysMenu: [],
-          loading: true,
-          error: null,
-        },
-      };
-    case ActionType.MENU_ERROR:
-      return {
-        ...state,
-        menu: {
-          daysMenu: [],
-          loading: false,
-          error: action.payload,
-        },
-      };
-    default:
-      return state;
-  }
+const reducer = (state: State | undefined, action: Action) => {
+  return {
+    admin: adminState(state, action),
+    user: userState(state, action),
+  };
 }
 
 export default reducer;

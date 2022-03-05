@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import { DayMenu } from '../../api/interfaces/menu';
-import MenuListItem from './menu-list-item';
 import Spinner from '../spinner/spinner';
 import ErrorIndicator from '../error/error-indicator';
 import { State } from '../../api/interfaces/state';
@@ -8,55 +7,54 @@ import { menuError, menuLoaded, menuRequested } from '../../actions';
 import withFoodOrderService from '../hoc/with-food-order-service';
 import { connect } from 'react-redux';
 import { compose } from '../../utils';
+import { Plate, PlateType } from '../../api/interfaces/plate';
 
-interface DayMenuListProps {
-  dayMenu: DayMenu;
-}
 interface MenuListProps {
   daysMenu: DayMenu[];
 }
 interface MenuListContainerProps {
-  fetchBooks: () => void;
+  fetchWholeMenu: () => void;
   daysMenu: DayMenu[];
   loading: boolean;
   error: string;
 }
 
-class DayMenuList extends Component<DayMenuListProps> {
-  render() {
-    const { dayMenu } = this.props;
-    return (
-      <li key={dayMenu.day}>
-        <ul>
-          {
-            dayMenu.plates.map((menuItem) => {
-              return (<li key={menuItem.id}><MenuListItem plate={menuItem}/></li>)
-            })
-          }
-        </ul>
-      </li>
-    );
-  }
-}
-
 class MenuList extends Component<MenuListProps> {
   render() {
     const { daysMenu } = this.props;
+    const printDayMenu = (dayMenu: DayMenu) => {
+      const plateTypesMap = Object.keys(PlateType)
+        .reduce<{ key:string, plates: Plate[] }[]>(
+          (res, key: string) => (
+            [
+              ...res,
+              { key, plates: dayMenu.plates.filter(plate => plate.type === key) },
+            ]),
+          []);
+      return plateTypesMap.map(plateTypeMap => (
+          <li key={plateTypeMap.key}> {plateTypeMap.key} <ul>
+            {plateTypeMap.plates.map(plate => <li key={plate.id}>{plate.name}</li> )}
+          </ul></li>
+        )
+      )
+    }
     return (
-      <ul>
-        {
-          daysMenu.map((dayMenu) => {
-            return (<DayMenuList dayMenu={dayMenu}/>)
+        daysMenu.map((dayMenu) => {
+            return (
+              <ul>
+                <li key={dayMenu.day}> {dayMenu.day}
+                  <ul>{ printDayMenu(dayMenu) }</ul>
+                </li>
+              </ul>
+            )
           })
-        }
-      </ul>
     )
   }
 }
 
 class MenuListContainer extends Component<MenuListContainerProps> {
   componentDidMount() {
-    this.props.fetchBooks();
+    this.props.fetchWholeMenu();
   }
 
   render() {
@@ -72,18 +70,18 @@ class MenuListContainer extends Component<MenuListContainerProps> {
 }
 
 const mapStateToProps = (state: State) => {
-  const { menu } = state;
+  const { daysMenu, loading, error } = state.admin;
   return {
-    daysMenu: menu.daysMenu,
-    loading: menu.loading,
-    error: menu.error,
+    daysMenu,
+    loading,
+    error,
   };
 }
 // @ts-ignore
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { foodOrderService } = ownProps;
   return {
-    fetchBooks: () => {
+    fetchWholeMenu: () => {
       dispatch(menuRequested());
       foodOrderService.getMenu()
         .then((data: DayMenu[]) => dispatch(menuLoaded(data)))
