@@ -1,9 +1,50 @@
-import { DayMenu } from '../interfaces/menu';
+import { DayMenu, MenuFilter } from '../interfaces/menu';
 import { PlateType } from '../interfaces/plate';
 
 const daysMenuData: DayMenu[] = [
   {
     day: 0,
+    plates: [
+      {
+        id: '1',
+        name: 'plate 1',
+        type: PlateType.salad,
+        hasSideDish: false,
+      },
+      {
+        id: '2',
+        name: 'plate 2',
+        type: PlateType.salad,
+        hasSideDish: false,
+      },
+      {
+        id: '3',
+        name: 'plate 3',
+        type: PlateType.main,
+        hasSideDish: false,
+      },
+      {
+        id: '4',
+        name: 'plate 4',
+        type: PlateType.main,
+        hasSideDish: false,
+      },
+      {
+        id: '5',
+        name: 'plate 5',
+        type: PlateType.desert,
+        hasSideDish: false,
+      },
+      {
+        id: '6',
+        name: 'plate 6',
+        type: PlateType.desert,
+        hasSideDish: false,
+      },
+    ],
+  },
+  {
+    day: 1,
     plates: [
       {
         id: '1',
@@ -55,10 +96,25 @@ export class FoodOrderService {
       );
     })
   }
-  getDayMenu(day:number) {
+  getDayMenu(filter: MenuFilter) {
+    const day = 0;
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-          resolve(daysMenuData.find(_ => _.day === day))
+        resolve({
+            day,
+          // @ts-ignore
+            plates: daysMenuData.find(_ => _.day === day).plates
+              .filter(plate => plate.type === filter.type),
+          })
+          // reject(new Error('Test Error'))
+        }, 1500
+      );
+    })
+  }
+  getPlateTypes() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+          resolve(Object.keys(PlateType))
           // reject(new Error('Test Error'))
         }, 1500
       );

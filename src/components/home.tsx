@@ -1,12 +1,18 @@
 import { Component } from 'react';
-import { MenuList } from './menu';
+import { DayMenuList } from './menu';
+import { Link } from 'react-router-dom';
 
 export class Home extends Component {
+  day = 0;
+
   render() {
     return (
       <div>
         <h2>Menu</h2>
-        <MenuList/>
+        <Link to="/order">
+          Open Order
+        </Link>
+        <DayMenuList/>
       </div>
     )
   }

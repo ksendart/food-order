@@ -1,6 +1,7 @@
-import { Plate } from './plate';
+import { OrderPlate } from './plate';
 
 export interface Order {
-  plates: Plate[];
+  plates: OrderPlate[];
   user: string;
+  error?: string | null;
 }

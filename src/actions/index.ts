@@ -1,10 +1,15 @@
-import { DayMenu } from '../api/interfaces/menu';
+import { DayMenu, MenuFilter } from '../api/interfaces/menu';
+import { Plate, PlateType } from '../api/interfaces/plate';
 
 export enum ActionType {
   MENU_LOADED = 'MENU_LOADED',
   DAY_MENU_LOADED = 'DAY_MENU_LOADED',
   MENU_REQUESTED = 'MENU_REQUESTED',
   MENU_ERROR = 'MENU_ERROR',
+  PLATE_TYPES_REQUESTED = 'PLATE_TYPES_REQUESTED',
+  PLATE_TYPES_LOADED = 'PLATE_TYPES_LOADED',
+  ADD_PLATE_TO_ORDER = 'ADD_PLATE_TO_ORDER',
+  REMOVE_PLATE_TO_ORDER = 'REMOVE_PLATE_TO_ORDER',
 }
 
 export type Action = {
@@ -12,6 +17,29 @@ export type Action = {
   payload: any;
 }
 
+const plateTypesRequested = () => {
+  return {
+    type: ActionType.PLATE_TYPES_REQUESTED
+  }
+}
+const plateTypesLoaded = (plateTypes: PlateType[]) => {
+  return {
+    type: ActionType.PLATE_TYPES_LOADED,
+    payload: plateTypes,
+  }
+}
+const addPlateToOrder = (plate: Plate) => {
+  return {
+    type: ActionType.ADD_PLATE_TO_ORDER,
+    payload: plate,
+  }
+}
+const removePlateFromOrder = (plate: Plate) => {
+  return {
+    type: ActionType.REMOVE_PLATE_TO_ORDER,
+    payload: plate,
+  }
+}
 const menuLoaded = (menu: DayMenu[]): Action => {
   return {
     type: ActionType.MENU_LOADED,
@@ -26,7 +54,7 @@ const dayMenuLoaded = (menu: DayMenu): Action => {
 }
 const menuRequested = () => {
   return {
-    type: ActionType.MENU_REQUESTED,
+    type: ActionType.MENU_REQUESTED
   }
 }
 const menuError = (error: string) => {
@@ -41,4 +69,8 @@ export {
   dayMenuLoaded,
   menuRequested,
   menuError,
+  plateTypesLoaded,
+  plateTypesRequested,
+  addPlateToOrder,
+  removePlateFromOrder,
 };

@@ -13,3 +13,8 @@ export interface Plate {
   hasSideDish: boolean;
   sideDish?: SideDish[];
 }
+export interface OrderPlate {
+  id: string;
+  plate: Plate;
+  count: number;
+}
