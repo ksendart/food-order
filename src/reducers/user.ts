@@ -4,43 +4,43 @@ import { OrderPlate, Plate } from '../api/interfaces/plate';
 
 const updateOrder = (state: UserState, plate: Plate, quantity: number): UserState => {
   const { order: { plates } } = state;
-  const cartItemIndex = plates.findIndex((orderPlate) => orderPlate.plate.id === plate.id);
-  const cartItem = plates[cartItemIndex];
+  const orderPlateIndex = plates.findIndex((orderPlate) => orderPlate.plate.id === plate.id);
+  const orderPlate = plates[orderPlateIndex];
 
-  const newCartItem = updateCartItem(plate, cartItem, quantity)
+  const newOrderPLate = updateOrderPlate(plate, orderPlate, quantity)
   return {
     ...state,
     order: {
       ...state.order,
-      plates: updateCartItems(plates, newCartItem, cartItemIndex),
+      plates: updateOrderPlates(plates, newOrderPLate, orderPlateIndex),
     }
   }
 };
-const updateCartItems = (cartItems: OrderPlate[], item: OrderPlate, idx: number) => {
-  if (item.count === 0) {
+const updateOrderPlates = (orderplates: OrderPlate[], orderPlate: OrderPlate, idx: number) => {
+  if (orderPlate.count === 0) {
     return [
-      ...cartItems.slice(0, idx),
-      ...cartItems.slice(idx + 1),
+      ...orderplates.slice(0, idx),
+      ...orderplates.slice(idx + 1),
     ];
   }
   if (idx !== -1) {
     return [
-      ...cartItems.slice(0, idx),
-      item,
-      ...cartItems.slice(idx + 1),
+      ...orderplates.slice(0, idx),
+      orderPlate,
+      ...orderplates.slice(idx + 1),
     ];
   } else {
     return [
-      ...cartItems,
-      item,
+      ...orderplates,
+      orderPlate,
     ];
   }
 }
-const updateCartItem = (plate: Plate, item: OrderPlate, quantity: number): OrderPlate => {
+const updateOrderPlate = (plate: Plate, orderPlate: OrderPlate, quantity: number): OrderPlate => {
   return {
     plate,
     id: plate.id,
-    count: (item ? item.count : 0) + quantity,
+    count: (orderPlate ? orderPlate.count : 0) + quantity,
   };
 }
 

@@ -20,4 +20,5 @@ export interface UserState {
 export interface State {
   admin: AdminState,
   user: UserState,
+  authorization: { isAuthorized: boolean, role: string, name: string },
 }

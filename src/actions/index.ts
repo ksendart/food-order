@@ -1,4 +1,4 @@
-import { DayMenu, MenuFilter } from '../api/interfaces/menu';
+import { DayMenu } from '../api/interfaces/menu';
 import { Plate, PlateType } from '../api/interfaces/plate';
 
 export enum ActionType {
@@ -10,6 +10,8 @@ export enum ActionType {
   PLATE_TYPES_LOADED = 'PLATE_TYPES_LOADED',
   ADD_PLATE_TO_ORDER = 'ADD_PLATE_TO_ORDER',
   REMOVE_PLATE_TO_ORDER = 'REMOVE_PLATE_TO_ORDER',
+  AUTHORIZED = 'AUTHORIZED',
+  UNAUTHORIZED = 'UnAUTHORIZED',
 }
 
 export type Action = {
@@ -17,6 +19,17 @@ export type Action = {
   payload: any;
 }
 
+const authorized = (login: string, role: string) => {
+  return {
+    type: ActionType.AUTHORIZED,
+    payload: { login, role },
+  }
+}
+const unauthorized = () => {
+  return {
+    type: ActionType.UNAUTHORIZED,
+  }
+}
 const plateTypesRequested = () => {
   return {
     type: ActionType.PLATE_TYPES_REQUESTED
@@ -73,4 +86,6 @@ export {
   plateTypesRequested,
   addPlateToOrder,
   removePlateFromOrder,
+  authorized,
+  unauthorized,
 };

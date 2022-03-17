@@ -10,18 +10,22 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { FoodOrderServiceProvider } from './components/context/food-order.service.context';
 import { ErrorBoundary } from './components/error/error-boundary';
+import { AuthServiceProvider } from './components/context/auth.service.context';
+import { AuthService } from './api/services/auth.service';
 
-
+const authService = new AuthService();
 const foodOrderService = new FoodOrderService();
 
 ReactDOM.render(
   <Provider store={store}>
     <ErrorBoundary>
+      <AuthServiceProvider value={authService}>
       <FoodOrderServiceProvider value={foodOrderService}>
         <Router>
           <App/>
         </Router>
       </FoodOrderServiceProvider>
+      </AuthServiceProvider>
     </ErrorBoundary>
   </Provider>,
   document.getElementById('root')

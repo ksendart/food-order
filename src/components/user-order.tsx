@@ -6,6 +6,7 @@ import { State } from '../api/interfaces/state';
 import { Order } from '../api/interfaces/order';
 import { OrderPlate, Plate } from '../api/interfaces/plate';
 import { removePlateFromOrder } from '../actions';
+import { Link } from 'react-router-dom';
 
 interface OrderProps {
   order: Order,
@@ -19,6 +20,7 @@ class UserOrder extends Component<OrderProps> {
     return (
       <div>
         <h2>Order</h2>
+        <Link to="/">Back to Home</Link>
         <ul>
           { userOrder.plates.map((plate: OrderPlate) => (
             <li key={plate.id}>

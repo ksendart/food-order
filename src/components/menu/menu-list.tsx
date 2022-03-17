@@ -32,8 +32,9 @@ class MenuList extends Component<MenuListProps> {
             ]),
           []);
       return plateTypesMap.map(plateTypeMap => (
-          <li key={plateTypeMap.key}> {plateTypeMap.key} <ul>
-            {plateTypeMap.plates.map(plate => <li key={plate.id}>{plate.name}</li> )}
+          <li key={'type' + plateTypeMap.key}> {plateTypeMap.key} <ul>
+            {plateTypeMap.plates
+              .map(plate => <li key={'day' + dayMenu.day + plate.id}>{plate.name}</li> )}
           </ul></li>
         )
       )
@@ -42,7 +43,7 @@ class MenuList extends Component<MenuListProps> {
         daysMenu.map((dayMenu) => {
             return (
               <ul>
-                <li key={dayMenu.day}> {dayMenu.day}
+                <li key={'day' + dayMenu.day}> {dayMenu.day}
                   <ul>{ printDayMenu(dayMenu) }</ul>
                 </li>
               </ul>
