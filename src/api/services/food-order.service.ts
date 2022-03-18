@@ -1,5 +1,6 @@
 import { DayMenu, MenuFilter } from '../interfaces/menu';
 import { PlateType } from '../interfaces/plate';
+import { Order } from '../interfaces/order';
 
 const daysMenuData: DayMenu[] = [
   {
@@ -85,6 +86,38 @@ const daysMenuData: DayMenu[] = [
     ],
   },
 ];
+const orders: Order[] = [
+  {
+    user: 'user1',
+    plates: [
+      {
+        id: '1',
+        plate: {
+          id: '1',
+          name: 'plate 1',
+          type: PlateType.salad,
+          hasSideDish: false,
+        },
+        count: 1,
+      },
+    ]
+  },
+  {
+    user: 'user3',
+    plates: [
+      {
+        id: '3',
+        plate: {
+          id: '3',
+          name: 'plate 3',
+          type: PlateType.main,
+          hasSideDish: false,
+        },
+        count: 1,
+      },
+    ]
+  },
+];
 
 export class FoodOrderService {
   getMenu() {
@@ -120,7 +153,15 @@ export class FoodOrderService {
       );
     })
   }
-  createPlate() {}
+  fetchAllOrders() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+          resolve(orders)
+          // reject(new Error('Test Error'))
+        }, 1500
+      );
+    })
+  }
   updatePlate() {}
   getOrders() {}
   getOrder() {}

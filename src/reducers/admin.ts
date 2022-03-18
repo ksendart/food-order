@@ -11,6 +11,17 @@ const adminState = (state: State | undefined, action: Action) => {
     };
   }
   switch (action.type) {
+    case ActionType.ORDERS_REQUESTED:
+      return {
+        ...state.admin,
+        loading: true,
+      };
+    case ActionType.ORDERS_LOADED:
+      return {
+        ...state.admin,
+        orders: action.payload,
+        loading: false,
+      };
     case ActionType.MENU_LOADED:
       return {
         ...state.admin,

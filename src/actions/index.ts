@@ -1,5 +1,6 @@
 import { DayMenu } from '../api/interfaces/menu';
 import { Plate, PlateType } from '../api/interfaces/plate';
+import { Order } from '../api/interfaces/order';
 
 export enum ActionType {
   MENU_LOADED = 'MENU_LOADED',
@@ -12,6 +13,8 @@ export enum ActionType {
   REMOVE_PLATE_TO_ORDER = 'REMOVE_PLATE_TO_ORDER',
   AUTHORIZED = 'AUTHORIZED',
   UNAUTHORIZED = 'UnAUTHORIZED',
+  ORDERS_REQUESTED = 'ORDERS_REQUESTED',
+  ORDERS_LOADED = 'ORDERS_LOADED',
 }
 
 export type Action = {
@@ -19,6 +22,17 @@ export type Action = {
   payload: any;
 }
 
+const ordersRequested = () => {
+  return {
+    type: ActionType.ORDERS_REQUESTED,
+  }
+}
+const ordersLoaded = (orders: Order[]) => {
+  return {
+    type: ActionType.ORDERS_LOADED,
+    payload: orders,
+  }
+}
 const authorized = (login: string, role: string) => {
   return {
     type: ActionType.AUTHORIZED,
@@ -88,4 +102,6 @@ export {
   removePlateFromOrder,
   authorized,
   unauthorized,
+  ordersLoaded,
+  ordersRequested,
 };
