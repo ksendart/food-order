@@ -7,6 +7,7 @@ import { Order } from '../api/interfaces/order';
 import { OrderPlate, Plate } from '../api/interfaces/plate';
 import { removePlateFromOrder } from '../actions';
 import { Link } from 'react-router-dom';
+import withAuthentication from './hoc/with-authentication';
 
 interface OrderProps {
   order: Order,
@@ -52,6 +53,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default compose(
+  withAuthentication(),
   withFoodOrderService(),
   connect(mapStateToProps, mapDispatchToProps)
 )(UserOrder);

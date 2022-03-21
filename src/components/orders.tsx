@@ -8,6 +8,7 @@ import { OrderPlate } from '../api/interfaces/plate';
 import { ordersLoaded, ordersRequested } from '../actions';
 import { Link } from 'react-router-dom';
 import Spinner from './spinner/spinner';
+import withAuthentication from './hoc/with-authentication';
 
 interface OrdersContainerProps {
   orders: Order[];
@@ -77,6 +78,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default compose(
+  withAuthentication(),
   withFoodOrderService(),
   connect(mapStateToProps, mapDispatchToProps)
 )(OrdersContainer);
