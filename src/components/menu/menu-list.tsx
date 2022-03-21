@@ -8,6 +8,7 @@ import withFoodOrderService from '../hoc/with-food-order-service';
 import { connect } from 'react-redux';
 import { compose } from '../../utils';
 import { Plate, PlateType } from '../../api/interfaces/plate';
+import { SideDish } from '../../api/interfaces/side-dish';
 
 interface MenuListProps {
   daysMenu: DayMenu[];
@@ -22,6 +23,18 @@ interface MenuListContainerProps {
 class MenuList extends Component<MenuListProps> {
   render() {
     const { daysMenu } = this.props;
+    const printPlate = (plate: Plate, day: number) => {
+      return <li key={'day' + day + plate.id}>
+        <span>{plate.name}</span>
+        {
+          plate.hasSideDish && plate.sideDish &&
+          plate.sideDish.map((sideDish: SideDish) => (
+            <span key={sideDish.id}>
+              <span>{sideDish.name}, {sideDish.type}</span>
+            </span>))
+        }
+      </li>
+    }
     const printDayMenu = (dayMenu: DayMenu) => {
       const plateTypesMap = Object.keys(PlateType)
         .reduce<{ key:string, plates: Plate[] }[]>(
@@ -32,9 +45,9 @@ class MenuList extends Component<MenuListProps> {
             ]),
           []);
       return plateTypesMap.map(plateTypeMap => (
-          <li key={'type' + plateTypeMap.key}> {plateTypeMap.key} <ul>
+          <li key={'type' + dayMenu.day + plateTypeMap.key}> {plateTypeMap.key} <ul>
             {plateTypeMap.plates
-              .map(plate => <li key={'day' + dayMenu.day + plate.id}>{plate.name}</li> )}
+              .map(plate => printPlate(plate, dayMenu.day))}
           </ul></li>
         )
       )
@@ -42,7 +55,7 @@ class MenuList extends Component<MenuListProps> {
     return (
         daysMenu.map((dayMenu) => {
             return (
-              <ul>
+              <ul key={'wholeDay' + dayMenu.day}>
                 <li key={'day' + dayMenu.day}> {dayMenu.day}
                   <ul>{ printDayMenu(dayMenu) }</ul>
                 </li>

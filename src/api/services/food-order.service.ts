@@ -1,46 +1,59 @@
 import { DayMenu, MenuFilter } from '../interfaces/menu';
 import { PlateType } from '../interfaces/plate';
 import { Order } from '../interfaces/order';
+import { SideDishType } from '../interfaces/side-dish';
 
 const daysMenuData: DayMenu[] = [
   {
     day: 0,
     plates: [
       {
-        id: '1',
+        id: '01',
         name: 'plate 1',
         type: PlateType.salad,
         hasSideDish: false,
       },
       {
-        id: '2',
+        id: '02',
         name: 'plate 2',
         type: PlateType.salad,
-        hasSideDish: false,
+        hasSideDish: true,
+        sideDish: [
+          { id: '021', name: 'sideDish 1', type: SideDishType.sauce },
+          { id: '022', name: 'sideDish 2', type: SideDishType.sauce },
+        ]
       },
       {
-        id: '3',
+        id: '03',
         name: 'plate 3',
         type: PlateType.main,
         hasSideDish: false,
       },
       {
-        id: '4',
+        id: '04',
         name: 'plate 4',
         type: PlateType.main,
-        hasSideDish: false,
+        hasSideDish: true,
+        sideDish: [
+          { id: '041', name: 'sideDish 1', type: SideDishType.garnish },
+          { id: '042', name: 'sideDish 2', type: SideDishType.garnish },
+        ]
       },
       {
-        id: '5',
+        id: '05',
         name: 'plate 5',
         type: PlateType.desert,
         hasSideDish: false,
       },
       {
-        id: '6',
+        id: '06',
         name: 'plate 6',
         type: PlateType.desert,
-        hasSideDish: false,
+        hasSideDish: true,
+        sideDish: [
+          { id: '061', name: 'sideDish 1', type: SideDishType.topping },
+          { id: '062', name: 'sideDish 2', type: SideDishType.topping },
+        ]
       },
     ],
   },
@@ -48,37 +61,37 @@ const daysMenuData: DayMenu[] = [
     day: 1,
     plates: [
       {
-        id: '1',
+        id: '11',
         name: 'plate 1',
         type: PlateType.salad,
         hasSideDish: false,
       },
       {
-        id: '2',
+        id: '12',
         name: 'plate 2',
         type: PlateType.salad,
         hasSideDish: false,
       },
       {
-        id: '3',
+        id: '13',
         name: 'plate 3',
         type: PlateType.main,
         hasSideDish: false,
       },
       {
-        id: '4',
+        id: '14',
         name: 'plate 4',
         type: PlateType.main,
         hasSideDish: false,
       },
       {
-        id: '5',
+        id: '15',
         name: 'plate 5',
         type: PlateType.desert,
         hasSideDish: false,
       },
       {
-        id: '6',
+        id: '16',
         name: 'plate 6',
         type: PlateType.desert,
         hasSideDish: false,

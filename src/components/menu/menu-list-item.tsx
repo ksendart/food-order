@@ -1,16 +1,39 @@
 import { Plate } from '../../api/interfaces/plate';
+import { SideDish } from '../../api/interfaces/side-dish';
+import { Component } from 'react';
 
-const MenuListItem = ({ plate, addPlateToOrder }: { plate: Plate, addPlateToOrder: () => void }) => {
-  return (
-    <div>
+interface MenuListItemProps {
+  plate: Plate;
+  addPlateToOrder: (sideDish?: SideDish) => void;
+}
+
+class MenuListItem extends Component<MenuListItemProps, { sideDish: SideDish | undefined }> {
+  state = {
+    sideDish: undefined,
+  };
+
+  render() {
+    const { plate, addPlateToOrder } = this.props;
+    return (
+      <div>
       <span>
         {plate.name}, {plate.type}
       </span>
-      <span className={'action'}>
-        <button onClick={addPlateToOrder}>add to order</button>
+        {plate.hasSideDish && plate.sideDish &&
+          plate.sideDish.map((sideDish: SideDish) => (<span key={sideDish.id}>
+          <input type="radio" id={sideDish.id}
+                 checked={this.state.sideDish === sideDish}
+                 onChange={() => this.setState( { sideDish: sideDish })}
+                 name="sideDish" value={sideDish.name}/>
+            <label htmlFor={sideDish.id}>{sideDish.name}, {sideDish.type}</label>
+        </span>))}
+        <span className={'action'}>
+        {plate.hasSideDish && <button onClick={() => this.setState({ sideDish: undefined })}>resetSideDish</button>}
+        <button onClick={() => addPlateToOrder(this.state.sideDish)}>add to order</button>
       </span>
-    </div>
-  )
+      </div>
+    );
+  }
 }
 
 export default MenuListItem;

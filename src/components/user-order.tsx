@@ -8,6 +8,7 @@ import { OrderPlate, Plate } from '../api/interfaces/plate';
 import { removePlateFromOrder } from '../actions';
 import { Link } from 'react-router-dom';
 import withAuthentication from './hoc/with-authentication';
+import { SideDish } from '../api/interfaces/side-dish';
 
 interface OrderProps {
   order: Order,
@@ -23,9 +24,15 @@ class UserOrder extends Component<OrderProps> {
         <h2>Order</h2>
         <Link to="/">Back to Home</Link>
         <ul>
-          { userOrder.plates.map((plate: OrderPlate) => (
-            <li key={plate.id}>
+          { userOrder.plates.map((plate: OrderPlate, index: number) => (
+            <li key={'' + index + plate.id}>
               <span>{plate.plate.name}</span>
+              {
+                plate.plate.hasSideDish && plate.plate.sideDish &&
+                plate.plate.sideDish.map((sideDish: SideDish) => (<span key={sideDish.id}>
+                  <span>{sideDish.name}, {sideDish.type}</span>
+                </span>))
+              }
               <span>{plate.count}</span>
               <span className={'action'}>
                 <button onClick={() => removePlateFromOrder(plate.plate)}>remove from order</button>

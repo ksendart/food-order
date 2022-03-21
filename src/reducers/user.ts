@@ -1,10 +1,14 @@
 import { State, UserState } from '../api/interfaces/state';
 import { Action, ActionType } from '../actions';
 import { OrderPlate, Plate } from '../api/interfaces/plate';
+import _ from 'lodash';
 
 const updateOrder = (state: UserState, plate: Plate, quantity: number): UserState => {
   const { order: { plates } } = state;
-  const orderPlateIndex = plates.findIndex((orderPlate) => orderPlate.plate.id === plate.id);
+  const orderPlateIndex = plates.findIndex((orderPlate) =>
+    orderPlate.plate.id === plate.id &&
+    (!plate.hasSideDish || (orderPlate.plate.hasSideDish && _.isEqual(plate.sideDish, orderPlate.plate.sideDish)))
+  );
   const orderPlate = plates[orderPlateIndex];
 
   const newOrderPLate = updateOrderPlate(plate, orderPlate, quantity)

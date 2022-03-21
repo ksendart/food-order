@@ -1,6 +1,7 @@
 import { DayMenu } from '../api/interfaces/menu';
 import { Plate, PlateType } from '../api/interfaces/plate';
 import { Order } from '../api/interfaces/order';
+import { SideDish } from '../api/interfaces/side-dish';
 
 export enum ActionType {
   MENU_LOADED = 'MENU_LOADED',
@@ -55,10 +56,11 @@ const plateTypesLoaded = (plateTypes: PlateType[]) => {
     payload: plateTypes,
   }
 }
-const addPlateToOrder = (plate: Plate) => {
+const addPlateToOrder = (plate: Plate, sideDish?: SideDish) => {
   return {
     type: ActionType.ADD_PLATE_TO_ORDER,
-    payload: plate,
+    payload: sideDish ? {...plate, hasSideDish: true, sideDish: [sideDish]} :
+      { ...plate, hasSideDish: false, sideDish: undefined },
   }
 }
 const removePlateFromOrder = (plate: Plate) => {

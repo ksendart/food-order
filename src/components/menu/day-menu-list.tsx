@@ -16,6 +16,7 @@ import withFoodOrderService from '../hoc/with-food-order-service';
 import { connect } from 'react-redux';
 import { compose } from '../../utils';
 import { Plate, PlateType } from '../../api/interfaces/plate';
+import { SideDish } from '../../api/interfaces/side-dish';
 
 interface DayMenuListContainerProps {
   fetchPlateTypes: () => void;
@@ -29,7 +30,7 @@ interface DayMenuListContainerProps {
 
 interface DayMenuListProps {
   dayMenu: DayMenu;
-  addPlateToOrder: (plate: Plate) => void;
+  addPlateToOrder: (plate: Plate, sideDish?: SideDish) => void;
 }
 
 class DayMenuList extends Component<DayMenuListProps> {
@@ -40,7 +41,11 @@ class DayMenuList extends Component<DayMenuListProps> {
         <ul>
           {
             dayMenu.plates.map((menuItem) => {
-              return (<li key={menuItem.id}><MenuListItem plate={menuItem} addPlateToOrder={() => addPlateToOrder(menuItem)}/></li>)
+              return (
+                <li key={menuItem.id}>
+                  <MenuListItem plate={menuItem}
+                                addPlateToOrder={(sideDish) => addPlateToOrder(menuItem, sideDish)}/>
+                </li>)
             })
           }
         </ul>
@@ -94,8 +99,8 @@ const mapStateToProps = (state: State) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { foodOrderService } = ownProps;
   return {
-    addPlateToOrder: (plate: Plate) => {
-      dispatch(addPlateToOrder(plate));
+    addPlateToOrder: (plate: Plate, sideDish?: SideDish) => {
+      dispatch(addPlateToOrder(plate, sideDish));
     },
     fetchPlateTypes: () => {
       dispatch(plateTypesRequested());

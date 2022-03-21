@@ -4,9 +4,9 @@ import { Action, ActionType } from '../actions';
 const authorizationState = (state: State | undefined, action: Action) => {
   if (state === undefined) {
     return {
-      isAuthorized: false,
-      role: 'none',
-      name: 'none',
+      isAuthorized: true,
+      role: 'admin',
+      name: 'default admin',
     };
   }
   switch (action.type) {
