@@ -1,4 +1,4 @@
-import { ChangeEvent, Component, FormEvent } from 'react';
+import React, { ChangeEvent, Component, FormEvent } from 'react';
 import withFoodOrderService from './hoc/with-food-order-service';
 import { connect } from 'react-redux';
 import compose from '../utils/compose';
@@ -29,13 +29,13 @@ class NewSideDish extends Component<SideDishProps, Partial<SideDish>> {
     const handleInputChange = (event: ChangeEvent<(HTMLInputElement | HTMLSelectElement)>) => {
       this.setState({ [event.target.name]: event.target.value });
     };
-    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       this.props.addSideDish({ ...this.state, id: '' + this.dishId++ });
       this.setState({ ...this.initialState });
     }
     return (
-      <form onSubmit={onSubmit}>
+      <>
         <label>
           Name
           <input
@@ -55,20 +55,23 @@ class NewSideDish extends Component<SideDishProps, Partial<SideDish>> {
         </label>
         <br />
         <span className={'action'}>
-            <input type="submit" value="Add to Plate"/>
+          <button onClick={onSubmit}>Add to Plate</button>
           </span>
-      </form>
+      </>
     );
   }
 }
 
-interface PlateProps {
+interface PlateInDayProps {
   addPlateToMenu: (day: number, plate: Partial<Plate>) => void;
   router: { navigate: (path: string) => void };
 }
 
+interface PlateProps {
+  addPlateToDay: (plate: Partial<Plate>) => void;
+}
+
 class NewPlate extends Component<PlateProps,(Partial<Plate> | null)> {
-  plateId = 1;
   state = {
     name: '',
     type: PlateType.salad,
@@ -76,10 +79,15 @@ class NewPlate extends Component<PlateProps,(Partial<Plate> | null)> {
     sideDish: [],
   };
   render() {
-    const addPlateToMenu = this.props.addPlateToMenu;
+    const addPlateToDay = this.props.addPlateToDay;
+
+    const onSubmit = () => {
+      console.log(this.state);
+      addPlateToDay(this.state);
+    }
     const addSideDish = (newSideDish: Partial<SideDish>) => {
       // @ts-ignore
-      this.setState(({ sideDish }) => ({ sideDish: [...sideDish, newSideDish] }));
+      this.setState(({ sideDish }) => ({ sideDish: [...sideDish, newSideDish] }), onSubmit);
     };
     const removeSideDish = (removedSideDish: SideDish) => {
       // @ts-ignore
@@ -88,26 +96,19 @@ class NewPlate extends Component<PlateProps,(Partial<Plate> | null)> {
         return {
           sideDish: [...sideDish.slice(0, index), ...sideDish.slice(index + 1)],
         }
-      });
+      }, onSubmit);
     };
     const handleInputChange = (event: ChangeEvent<(HTMLInputElement | HTMLSelectElement)>) => {
       if (event.target.type === 'checkbox') {
         // @ts-ignore
-        this.setState({ [event.target.name] : event.target.checked });
+        this.setState({ [event.target.name] : event.target.checked }, onSubmit);
       } else {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({[event.target.name]: event.target.value}, onSubmit);
       }
     };
-    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      addPlateToMenu(0, { ...this.state, id: '' + this.plateId++ });
-      this.props.router.navigate('/');
-    }
     return (
       <div>
-        <h2>Order</h2>
-        <Link to="/">Back to Home</Link>
-        <form onSubmit={onSubmit}>
+        <>
           <label>
             Name
             <input
@@ -143,11 +144,66 @@ class NewPlate extends Component<PlateProps,(Partial<Plate> | null)> {
             )
           }
           <br />
+        </>
+        { this.state.hasSideDish && <NewSideDish addSideDish={addSideDish}/> }
+      </div>
+    )
+  }
+}
+class NewPlateInDay extends Component<PlateInDayProps,({ day: number, newPlate: Partial<Plate>} | null)> {
+  state = {
+    day: 0,
+    newPlate: {
+      name: '',
+      type: PlateType.salad,
+      hasSideDish: false,
+      sideDish: [],
+    }
+  };
+  render() {
+    const addPlateToMenu = this.props.addPlateToMenu;
+    const handleInputChange = (event: ChangeEvent<(HTMLInputElement | HTMLSelectElement)>) => {
+      if (event.target.type === 'checkbox') {
+        // @ts-ignore
+        this.setState({ ...this.state, newPlate: {...this.state.newPlate, [event.target.name] : event.target.checked }});
+      } else {
+        if (event.target.name === 'day') {
+          this.setState({[event.target.name]: event.target.value});
+        } else {
+          this.setState({...this.state, newPlate: {...this.state.newPlate, [event.target.name]: event.target.value}});
+        }
+      }
+    };
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      addPlateToMenu(this.state.day, { ...this.state.newPlate });
+      this.props.router.navigate('/');
+    }
+    const addPlateToDay = (plate: Partial<Plate>) => {
+      // @ts-ignore
+      this.setState(({ newPlate }) => ({ newPlate: plate }));
+    };
+    return (
+      <div>
+        <h2>Order</h2>
+        <Link to="/">Back to Home</Link>
+        <form onSubmit={onSubmit}>
+          <label>
+            Day
+            <input
+              name="day"
+              type="number"
+              min={0}
+              max={6}
+              value={this.state.day}
+              onChange={handleInputChange} />
+          </label>
+          <br/>
+          <NewPlate addPlateToDay={addPlateToDay}/>
           <span className={'action'}>
             <input type="submit" value="Add to Menu"/>
           </span>
         </form>
-        { this.state.hasSideDish && <NewSideDish addSideDish={addSideDish}/> }
       </div>
     )
   }
@@ -173,4 +229,4 @@ export default compose(
   withFoodOrderService(),
   withRouter(),
   connect(mapStateToProps, mapDispatchToProps)
-)(NewPlate);
+)(NewPlateInDay);

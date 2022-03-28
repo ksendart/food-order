@@ -2,19 +2,20 @@ import { DayMenu, MenuFilter } from '../interfaces/menu';
 import { PlateType } from '../interfaces/plate';
 import { Order } from '../interfaces/order';
 import { SideDishType } from '../interfaces/side-dish';
+import { v1 as uuid1 } from 'uuid';
 
 const daysMenuData: DayMenu[] = [
   {
     day: 0,
     plates: [
       {
-        id: '01',
+        id: uuid1(),
         name: 'plate 1',
         type: PlateType.salad,
         hasSideDish: false,
       },
       {
-        id: '02',
+        id: uuid1(),
         name: 'plate 2',
         type: PlateType.salad,
         hasSideDish: true,
@@ -24,13 +25,13 @@ const daysMenuData: DayMenu[] = [
         ]
       },
       {
-        id: '03',
+        id: uuid1(),
         name: 'plate 3',
         type: PlateType.main,
         hasSideDish: false,
       },
       {
-        id: '04',
+        id: uuid1(),
         name: 'plate 4',
         type: PlateType.main,
         hasSideDish: true,
@@ -40,13 +41,13 @@ const daysMenuData: DayMenu[] = [
         ]
       },
       {
-        id: '05',
+        id: uuid1(),
         name: 'plate 5',
         type: PlateType.desert,
         hasSideDish: false,
       },
       {
-        id: '06',
+        id: uuid1(),
         name: 'plate 6',
         type: PlateType.desert,
         hasSideDish: true,
@@ -61,37 +62,37 @@ const daysMenuData: DayMenu[] = [
     day: 1,
     plates: [
       {
-        id: '11',
+        id: uuid1(),
         name: 'plate 1',
         type: PlateType.salad,
         hasSideDish: false,
       },
       {
-        id: '12',
+        id: uuid1(),
         name: 'plate 2',
         type: PlateType.salad,
         hasSideDish: false,
       },
       {
-        id: '13',
+        id: uuid1(),
         name: 'plate 3',
         type: PlateType.main,
         hasSideDish: false,
       },
       {
-        id: '14',
+        id: uuid1(),
         name: 'plate 4',
         type: PlateType.main,
         hasSideDish: false,
       },
       {
-        id: '15',
+        id: uuid1(),
         name: 'plate 5',
         type: PlateType.desert,
         hasSideDish: false,
       },
       {
-        id: '16',
+        id: uuid1(),
         name: 'plate 6',
         type: PlateType.desert,
         hasSideDish: false,
@@ -104,9 +105,9 @@ const orders: Order[] = [
     user: 'user1',
     plates: [
       {
-        id: '1',
+        id: uuid1(),
         plate: {
-          id: '1',
+          id: uuid1(),
           name: 'plate 1',
           type: PlateType.salad,
           hasSideDish: false,
@@ -119,9 +120,9 @@ const orders: Order[] = [
     user: 'user3',
     plates: [
       {
-        id: '3',
+        id: uuid1(),
         plate: {
-          id: '3',
+          id: uuid1(),
           name: 'plate 3',
           type: PlateType.main,
           hasSideDish: false,

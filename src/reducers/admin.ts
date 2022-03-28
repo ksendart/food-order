@@ -2,6 +2,7 @@ import { State } from '../api/interfaces/state';
 import { Action, ActionType } from '../actions';
 import { DayMenu } from '../api/interfaces/menu';
 import { Plate } from '../api/interfaces/plate';
+import { v1 as uuid1 } from 'uuid';
 
 const addPlateToDayMenu = (dayMenu: DayMenu, plate: Plate): DayMenu => {
   return {
@@ -9,7 +10,6 @@ const addPlateToDayMenu = (dayMenu: DayMenu, plate: Plate): DayMenu => {
     plates: [ ...dayMenu.plates, plate],
   };
 }
-
 
 const adminState = (state: State | undefined, action: Action) => {
   if (state === undefined) {
@@ -24,7 +24,17 @@ const adminState = (state: State | undefined, action: Action) => {
     case ActionType.ADD_PLATE_TO_MENU:
       console.log(action.payload);
       const idx = state.admin.daysMenu.findIndex(_ => _.day === action.payload.day);
-      const dayMenu = addPlateToDayMenu(state.admin.daysMenu[idx], action.payload.plate);
+      const plateId = uuid1();
+      if (idx === -1) {
+        return {
+          ...state.admin,
+          daysMenu: [
+              ...state.admin.daysMenu,
+            { day: action.payload.day, plates: [{ ...action.payload.plate, id: plateId }] },
+          ],
+        };
+      }
+      const dayMenu = addPlateToDayMenu(state.admin.daysMenu[idx], { ...action.payload.plate, id: plateId });
       return {
         ...state.admin,
         daysMenu: [

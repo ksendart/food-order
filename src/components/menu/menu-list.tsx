@@ -24,7 +24,7 @@ class MenuList extends Component<MenuListProps> {
   render() {
     const { daysMenu } = this.props;
     const printPlate = (plate: Plate, day: number) => {
-      return <li key={'day' + day + plate.id}>
+      return <li key={plate.id}>
         <span>{plate.name}</span>
         {
           plate.hasSideDish && plate.sideDish &&
