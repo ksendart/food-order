@@ -21,7 +21,11 @@ class Home extends Component<HomeProps> {
         <h2>Menu for {name}, your role is {role}</h2>
         <Link to="/logout">Log Out</Link>
         <br/>
-        { role === 'admin' ? <Link to="/orders">Open Orders</Link> : <Link to="/order">Open Order</Link> }
+        { role === 'admin' ?
+          (<div>
+              <Link to="/addPlate">Add plate to Menu</Link>
+              <Link to="/orders">Open Orders</Link>
+          </div>) : <Link to="/order">Open Order</Link> }
         <br/>
         { role === 'admin' ? <MenuList/> : <DayMenuList/> }
       </div>

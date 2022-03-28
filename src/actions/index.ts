@@ -16,6 +16,7 @@ export enum ActionType {
   UNAUTHORIZED = 'UnAUTHORIZED',
   ORDERS_REQUESTED = 'ORDERS_REQUESTED',
   ORDERS_LOADED = 'ORDERS_LOADED',
+  ADD_PLATE_TO_MENU = 'ADD_PLATE_TO_MENU',
 }
 
 export type Action = {
@@ -23,6 +24,12 @@ export type Action = {
   payload: any;
 }
 
+const addPlateToMenu = (day: number, plate: Partial<Plate>) => {
+  return {
+    type: ActionType.ADD_PLATE_TO_MENU,
+    payload: { day, plate },
+  }
+}
 const ordersRequested = () => {
   return {
     type: ActionType.ORDERS_REQUESTED,
@@ -106,4 +113,5 @@ export {
   unauthorized,
   ordersLoaded,
   ordersRequested,
+  addPlateToMenu,
 };

@@ -68,7 +68,10 @@ class MenuList extends Component<MenuListProps> {
 
 class MenuListContainer extends Component<MenuListContainerProps> {
   componentDidMount() {
-    this.props.fetchWholeMenu();
+    // remove condition if API is ready
+    if (!this.props.daysMenu || !this.props.daysMenu.length) {
+      this.props.fetchWholeMenu();
+    }
   }
 
   render() {
