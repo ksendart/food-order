@@ -1,4 +1,4 @@
-import { ChangeEvent, Component, FormEvent } from 'react';
+import React, { Component } from 'react';
 import { State } from '../api/interfaces/state';
 import {
   authorized,
@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { compose } from '../utils';
 import withAuthService from './hoc/with-auth-service';
 import { Navigate } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 interface LoginProps {
   login: string;
@@ -27,39 +29,30 @@ class Login extends Component<LoginProps> {
       return <Navigate to={'/'}/>
     }
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       this.setState({ [event.target.name]: event.target.value });
     };
-    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+    const onSubmit = () => {
       if (this.state.login && this.state.password) {
         authorize(this.state.login, this.state.password);
       }
     }
 
     return (
-      <div>
-        <form onSubmit={onSubmit}>
-          <label>
-            Login
-            <input
-              name="login"
-              type="text"
-              value={this.state.login}
-              onChange={handleInputChange} />
-          </label>
-          <br />
-          <label>
-            Password
-            <input
-              name="password"
-              type="password"
-              value={this.state.password}
-              onChange={handleInputChange} />
-          </label>
-          <br/>
-          <input type="submit" value="Log In"/>
-        </form>
+      <div className='form-container'>
+        <TextField
+          label="Login"
+          name="login"
+          type="text"
+          value={this.state.login}
+          onChange={handleInputChange} />
+        <TextField
+          label="Password"
+          name="password"
+          type="password"
+          value={this.state.password}
+          onChange={handleInputChange} />
+        <Button variant="contained" onClick={onSubmit}>Log In</Button>
       </div>
     );
     // return ()

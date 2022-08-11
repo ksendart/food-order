@@ -86,7 +86,7 @@
 .loading-io-spinner-pulse-book {
   width: 224px;
   height: 150px;
-  display: inline-block;
+  margin: 10px auto;
   overflow: hidden;
   background: #f1f2f3;
 }

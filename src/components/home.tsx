@@ -1,10 +1,11 @@
 import { Component } from 'react';
 import { DayMenuList, MenuList } from './menu';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { compose } from '../utils';
 import withAuthentication from './hoc/with-authentication';
 import { connect } from 'react-redux';
 import { State } from '../api/interfaces/state';
+import { Link } from '@mui/material';
 
 interface HomeProps {
   name: string,
@@ -19,14 +20,12 @@ class Home extends Component<HomeProps> {
     return (
       <div>
         <h2>Menu for {name}, your role is {role}</h2>
-        <Link to="/logout">Log Out</Link>
-        <br/>
+        <div className='link-list'><Link component={RouterLink} to="/logout">Log Out</Link></div>
         { role === 'admin' ?
-          (<div>
-              <Link to="/addPlate">Add plate to Menu</Link>
-              <Link to="/orders">Open Orders</Link>
-          </div>) : <Link to="/order">Open Order</Link> }
-        <br/>
+          (<div className='link-list'>
+              <Link component={RouterLink} to="/addPlate">Add plate to Menu</Link>
+              <Link component={RouterLink} to="/orders">Open Orders</Link>
+          </div>) : <Link component={RouterLink} to="/order">Open Order</Link> }
         { role === 'admin' ? <MenuList/> : <DayMenuList/> }
       </div>
     )

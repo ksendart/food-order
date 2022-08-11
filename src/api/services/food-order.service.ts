@@ -139,7 +139,7 @@ export class FoodOrderService {
       setTimeout(() => {
           resolve(daysMenuData)
           // reject(new Error('Test Error'))
-        }, 1500
+        }, 5000
       );
     })
   }

@@ -17,11 +17,14 @@ import { connect } from 'react-redux';
 import { compose } from '../../utils';
 import { Plate, PlateType } from '../../api/interfaces/plate';
 import { SideDish } from '../../api/interfaces/side-dish';
+import { Box, Tab, Tabs, TableContainer, Table, TableBody, TableRow } from '@mui/material';
+import Paper from '@mui/material/Paper';
 
 interface DayMenuListContainerProps {
   fetchPlateTypes: () => void;
   fetchDayMenu: (filter: MenuFilter) => void;
   addPlateToOrder: (plate: Plate) => void;
+  selectedTabIndex: number,
   plateTypes: PlateType[],
   dayMenu: DayMenu;
   loading: boolean;
@@ -37,29 +40,39 @@ class DayMenuList extends Component<DayMenuListProps> {
   render() {
     const { dayMenu, addPlateToOrder } = this.props;
     return (
-      <li key={dayMenu.day}>
-        <ul>
-          {
-            dayMenu.plates.map((menuItem) => {
-              return (
-                <li key={menuItem.id}>
-                  <MenuListItem plate={menuItem}
-                                addPlateToOrder={(sideDish) => addPlateToOrder(menuItem, sideDish)}/>
-                </li>)
-            })
-          }
-        </ul>
-      </li>
+      <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+        {
+          dayMenu.plates.map((menuItem) => {
+            return (
+              <TableRow key={menuItem.id}>
+                <MenuListItem plate={menuItem}
+                              addPlateToOrder={(sideDish) => addPlateToOrder(menuItem, sideDish)}/>
+              </TableRow>)
+          })
+        }
+        </TableBody>
+      </Table>
+      </TableContainer>
     );
   }
 }
 
 class DayMenuListContainer extends Component<DayMenuListContainerProps> {
+  state = {
+    selectedTabIndex: 0,
+  };
   componentDidMount() {
     this.props.fetchPlateTypes();
+    this.props.fetchDayMenu({
+      type: PlateType.salad,
+    });
   }
 
   selectType(type: PlateType) {
+    const typeIndex = Object.keys(PlateType).indexOf(type);
+    this.setState({ selectedTabIndex: typeIndex });
     this.props.fetchDayMenu({
       type,
     })
@@ -73,12 +86,13 @@ class DayMenuListContainer extends Component<DayMenuListContainerProps> {
     if (error) {
       return (<ErrorIndicator/>);
     }
-
     return (
       <div>
-        <ul>
-          { plateTypes.map(type => (<li key={type} onClick={() => this.selectType(type)}>{ type }</li>))}
-        </ul>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={this.state.selectedTabIndex} aria-label="basic tabs example">
+            { plateTypes.map(type => (<Tab key={type} label={type} onClick={() => this.selectType(type)}/>))}
+          </Tabs>
+        </Box>
         { !loading ? <DayMenuList dayMenu={dayMenu} addPlateToOrder={addPlateToOrder}/> :  <Spinner/> }
       </div>
     );

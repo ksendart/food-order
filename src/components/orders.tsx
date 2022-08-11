@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import withFoodOrderService from './hoc/with-food-order-service';
 import { connect } from 'react-redux';
 import compose from '../utils/compose';
@@ -6,9 +6,11 @@ import { State } from '../api/interfaces/state';
 import { Order } from '../api/interfaces/order';
 import { OrderPlate } from '../api/interfaces/plate';
 import { ordersLoaded, ordersRequested } from '../actions';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Spinner from './spinner/spinner';
 import withAuthentication from './hoc/with-authentication';
+import Link from '@mui/material/Link';
+
 
 interface OrdersContainerProps {
   orders: Order[];
@@ -25,7 +27,7 @@ class OrderList extends Component<OrdersProps> {
     return (
       <div>
         <h2>Order</h2>
-        <Link to="/">Back to Home</Link>
+        <Link component={RouterLink} to="/">Back to Home</Link>
         <ul>
           { userOrders.map(userOrder => (
             <li key={userOrder.user}> {userOrder.user}

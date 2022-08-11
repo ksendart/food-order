@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import withFoodOrderService from './hoc/with-food-order-service';
 import { connect } from 'react-redux';
 import compose from '../utils/compose';
@@ -6,9 +6,11 @@ import { State } from '../api/interfaces/state';
 import { Order } from '../api/interfaces/order';
 import { OrderPlate, Plate } from '../api/interfaces/plate';
 import { removePlateFromOrder } from '../actions';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import withAuthentication from './hoc/with-authentication';
 import { SideDish } from '../api/interfaces/side-dish';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 
 interface OrderProps {
   order: Order,
@@ -22,7 +24,7 @@ class UserOrder extends Component<OrderProps> {
     return (
       <div>
         <h2>Order</h2>
-        <Link to="/">Back to Home</Link>
+        <Link component={RouterLink} to="/">Back to Home</Link>
         <ul>
           { userOrder.plates.map((plate: OrderPlate, index: number) => (
             <li key={'' + index + plate.id}>
@@ -35,7 +37,7 @@ class UserOrder extends Component<OrderProps> {
               }
               <span>{plate.count}</span>
               <span className={'action'}>
-                <button onClick={() => removePlateFromOrder(plate.plate)}>remove from order</button>
+                <Button variant="contained" onClick={() => removePlateFromOrder(plate.plate)}>remove from order</Button>
               </span>
             </li>))}
         </ul>
